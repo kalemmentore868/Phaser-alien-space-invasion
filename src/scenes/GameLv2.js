@@ -3,9 +3,9 @@ import Spaceship from "../Spaceship.js";
 import Bullet from "../Bullet.js";
 import GameOver from "./GameOver.js";
 
-export default class GameLv1 extends Phaser.Scene {
+export default class GameLv2 extends Phaser.Scene {
   constructor() {
-    super("GameLv1");
+    super("GameLv2");
     this.ships;
     this.cannon;
     this.bullet;
@@ -14,6 +14,11 @@ export default class GameLv1 extends Phaser.Scene {
     this.time;
     this.clearTimer;
     this.level;
+  }
+
+  init(data) {
+    this.hits = { hitScore: data.hits1 };
+    this.misses = { hitScore: data.miss1 };
   }
 
   preload() {
@@ -26,7 +31,7 @@ export default class GameLv1 extends Phaser.Scene {
   create() {
     this.add.image(240, 320, "background");
 
-    this.level = 1;
+    this.level = 2;
     this.add.text(700, 600, `Level${this.level}`, {
       font: "16px Arial",
       fill: "#ffffff",
@@ -35,7 +40,7 @@ export default class GameLv1 extends Phaser.Scene {
       fixedWidth: "60",
     });
 
-    this.time.timeLeft = 10;
+    this.time.timeLeft = 30;
     this.time.text = this.add.text(350, 300, this.time.timeLeft, {
       font: "40px Arial",
       fill: "#ffffff",
@@ -44,7 +49,6 @@ export default class GameLv1 extends Phaser.Scene {
       fixedWidth: "60",
     });
 
-    this.hits.hitScore = 0;
     this.hits.text = this.add.text(50, 50, `Hits: ${this.hits.hitScore}`, {
       font: "32px Arial",
       fill: "#ffffff",
@@ -52,7 +56,6 @@ export default class GameLv1 extends Phaser.Scene {
       align: "center",
     });
 
-    this.misses.hitScore = 0;
     this.misses.text = this.add.text(650, 50, `Miss: ${this.misses.hitScore}`, {
       font: "32px Arial",
       fill: "#ffffff",
@@ -143,15 +146,7 @@ export default class GameLv1 extends Phaser.Scene {
   decrementTimer() {
     this.clearTimer = setInterval(() => {
       this.time.timeLeft--;
-
       this.time.text.setText(this.time.timeLeft);
-      if (this.time.timeLeft <= 0) {
-        clearInterval(this.clearTimer);
-        this.scene.start("GameLv2", {
-          hits1: this.hits.hitScore,
-          miss1: this.misses.hitScore,
-        });
-      }
     }, 1000);
   }
 
